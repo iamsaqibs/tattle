@@ -6,3 +6,6 @@ hall/receipts
 hall/HALL_OF_SHAME.draft.md
 .DS_Store
 coverage
+
+# internal launch material (never commit)
+launch/
