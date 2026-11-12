@@ -2,7 +2,7 @@ import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawn } from 'node:child_process';
+import { spawn, type ChildProcess } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { analyze } from './analyze/index.js';
 import { diffReceipts } from './diff.js';
@@ -150,6 +150,48 @@ function newRunId(): string {
 }
 
 /** NODE_OPTIONS with our preload appended once; existing options are preserved. */
+/**
+ * Windows cannot CreateProcess a `.cmd`/`.bat` shim (npm, npx, yarn...), and since CVE-2024-27980 Node
+ * refuses to spawn them without a shell. Resolve the command via PATH/PATHEXT; only for a batch file do
+ * we go through cmd.exe, with every argument escaped so the user's argv is passed through verbatim.
+ * Everything else (real executables, POSIX) is spawned directly with no shell.
+ */
+export function resolveWinCommand(file: string, env: NodeJS.ProcessEnv, cwd = process.cwd()): string | undefined {
+  const exts = (env.PATHEXT || '.COM;.EXE;.BAT;.CMD').split(';').filter(Boolean);
+  const hasExt = exts.some((e) => file.toLowerCase().endsWith(e.toLowerCase()));
+  const names = hasExt ? [file, ...exts.map((e) => file + e)] : [...exts.map((e) => file + e), file];
+  const dirs = /[\\/]/.test(file) ? [''] : [cwd, ...(env.Path ?? env.PATH ?? '').split(';').filter(Boolean)];
+  for (const d of dirs) {
+    for (const n of names) {
+      const full = d ? path.join(d, n) : n;
+      try {
+        if (fs.statSync(full).isFile()) return full;
+      } catch {
+        /* keep looking */
+      }
+    }
+  }
+  return undefined;
+}
+
+const CMD_META = /([()%!^"<>&|;, ])/g;
+export function escapeCmdArg(arg: string): string {
+  const q = '"' + arg.replace(/(\\*)"/g, '$1$1\\"').replace(/(\\*)$/, '$1$1') + '"';
+  return q.replace(CMD_META, '^$1');
+}
+
+function spawnCommand(file: string, args: string[], env: NodeJS.ProcessEnv): ChildProcess {
+  if (process.platform === 'win32') {
+    const full = resolveWinCommand(file, env);
+    if (full && /\.(?:cmd|bat)$/i.test(full)) {
+      const line = [escapeCmdArg(full), ...args.map(escapeCmdArg)].join(' ');
+      return spawn(line, [], { stdio: 'inherit', env, shell: true });
+    }
+    if (full) return spawn(full, args, { stdio: 'inherit', env });
+  }
+  return spawn(file, args, { stdio: 'inherit', env });
+}
+
 export function buildNodeOptions(existing: string | undefined, preloadUrl: string): string {
   if (existing && existing.includes(preloadUrl)) return existing;
   return [existing, `--import ${preloadUrl}`].filter(Boolean).join(' ');
@@ -227,7 +269,7 @@ async function run(argv: string[]): Promise<number> {
   let childPid: number | undefined;
 
   const { exitCode, spawnFailed } = await new Promise<{ exitCode: number; spawnFailed: boolean }>((resolve) => {
-    const child = spawn(file!, rest, { stdio: 'inherit', env });
+    const child = spawnCommand(file!, rest, env);
     childPid = child.pid;
     const forward = (sig: NodeJS.Signals) => () => {
       try {

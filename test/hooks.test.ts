@@ -3,7 +3,7 @@ import dgram from 'node:dgram';
 import fs from 'node:fs';
 import path from 'node:path';
 import { beforeAll, describe, expect, it } from 'vitest';
-import { ensureBuilt, runTattle, tmpDir, type RunResult } from './helpers.js';
+import { ensureBuilt, ROOT, runTattle, tmpDir, type RunResult } from './helpers.js';
 
 beforeAll(ensureBuilt);
 const runEsm = (code: string, env: Record<string, string | undefined> = {}): Promise<RunResult> => runTattle(['node', '--input-type=module', '-e', code], env);
@@ -112,7 +112,7 @@ describe('env hooks', () => {
 });
 
 describe('regression: hooks must not change semantics (npm breakage)', () => {
-  const fixture = path.join(path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'), 'fixtures', 'compat', 'env-writes.cjs');
+  const fixture = path.join(ROOT, 'fixtures', 'compat', 'env-writes.cjs');
   it('process.env writes/defineProperty/delete behave identically hooked and unhooked', async () => {
     const { execFileSync } = await import('node:child_process');
     const base: NodeJS.ProcessEnv = { ...process.env };

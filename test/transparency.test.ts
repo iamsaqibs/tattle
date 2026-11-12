@@ -50,7 +50,15 @@ function run(file: string, hooked: boolean, work: string, extraEnv: Record<strin
 /** Scratch dirs differ between runs; scrub them (and pids) so only semantics are compared. */
 const scrub = (s: string, w: string) => s.split(w).join('<W>');
 
-const probes = fs.readdirSync(dir).filter((f) => /\.(cjs|mjs)$/.test(f) && !f.startsWith('_') && !f.startsWith('perf-')).sort();
+// proc-full.cjs drives POSIX shell builtins and tools (echo a; exit 5, pwd, cat, printf, /bin/echo, $((..))),
+// which cmd.exe cannot run: the probe itself is POSIX-only. Child-process transparency on Windows is covered
+// by the cli/hooks tests that spawn node children.
+const POSIX_ONLY = new Set(['proc-full.cjs']);
+const probes = fs
+  .readdirSync(dir)
+  .filter((f) => /\.(cjs|mjs)$/.test(f) && !f.startsWith('_') && !f.startsWith('perf-'))
+  .filter((f) => !(process.platform === 'win32' && POSIX_ONLY.has(f)))
+  .sort();
 
 describe('transparency: hooked output === unhooked output', () => {
   for (const p of probes) {

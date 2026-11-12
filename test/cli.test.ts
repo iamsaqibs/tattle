@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { ensureBuilt, has, runTattle, sig, tmpDir } from './helpers.js';
 
@@ -122,11 +123,19 @@ describe('tattle run harness', () => {
     expect(bad.stderr).toMatch(/--help/);
   });
 
+  it('runs npm (a .cmd shim on Windows) and propagates its output and exit code', async () => {
+    const r = await runTattle(['npm', '--version']);
+    expect(r.code).toBe(0);
+    expect(r.stdout.trim()).toMatch(/^\d+\.\d+\.\d+/);
+    const bad = await runTattle(['npm', 'run', 'no-such-script-xyz']);
+    expect(bad.code).not.toBe(0);
+  });
+
   it('is a no-op for hooks when TATTLE_LOG is absent (preload loaded standalone)', async () => {
     const { spawnSync } = await import('node:child_process');
     const env = { ...process.env };
     delete env.TATTLE_LOG;
-    const res = spawnSync(process.execPath, ['--import', path.resolve('dist/preload.js'), '-p', '1+1'], { env, encoding: 'utf8' });
+    const res = spawnSync(process.execPath, ['--import', pathToFileURL(path.resolve('dist/preload.js')).href, '-p', '1+1'], { env, encoding: 'utf8' });
     expect(res.stdout.trim()).toBe('2');
     expect(has('node')).toBe(true);
   });
