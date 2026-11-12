@@ -11,6 +11,9 @@
   "files": [
     "dist",
     "docs",
+    "!docs/assets/*.gif",
+    "!docs/assets/*.png",
+    "!docs/demo.tape",
     "README.md",
     "LICENSE",
     "CHANGELOG.md"
