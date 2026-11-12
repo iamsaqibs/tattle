@@ -187,7 +187,6 @@ function spawnCommand(file: string, args: string[], env: NodeJS.ProcessEnv): Chi
       const line = [escapeCmdArg(full), ...args.map(escapeCmdArg)].join(' ');
       return spawn(line, [], { stdio: 'inherit', env, shell: true });
     }
-    if (full) return spawn(full, args, { stdio: 'inherit', env });
   }
   return spawn(file, args, { stdio: 'inherit', env });
 }

@@ -36,7 +36,11 @@ describe('event writer', () => {
   });
 
   it('never throws when the log path is unusable', () => {
-    const w = createEventWriter('/proc/definitely/not/writable/events.jsonl');
+    // A path *under a regular file* is unusable on every OS (ENOTDIR). Don't use /proc/...: recursive
+    // mkdir under /proc can spin forever on Linux's Node, which hung the Ubuntu CI job.
+    const blocker = path.join(tmpDir(), 'a-file');
+    fs.writeFileSync(blocker, 'x');
+    const w = createEventWriter(path.join(blocker, 'sub', 'events.jsonl'));
     expect(() => w.emit({ cat: 'fs', op: 'read', target: '/x' })).not.toThrow();
   });
 });
