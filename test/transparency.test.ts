@@ -33,6 +33,8 @@ const probeExitListeners = (opts: string | undefined) => {
 const emptyImportOpts = `--import ${pathToFileURL(emptyPreload).href}`;
 const nodePerturbsWithImport = probeExitListeners(undefined) !== probeExitListeners(emptyImportOpts);
 
+const FILE_STDOUT = new Set(['life-stdout-flush.cjs']);
+
 function run(file: string, hooked: boolean, work: string, extraEnv: Record<string, string> = {}): Res {
   const env: NodeJS.ProcessEnv = { ...process.env, ...extraEnv };
   delete env.NODE_OPTIONS;
@@ -42,6 +44,16 @@ function run(file: string, hooked: boolean, work: string, extraEnv: Record<strin
     env.TATTLE_LOG = path.join(tmpDir('tattle-tp-'), 'events.jsonl');
   } else if (nodePerturbsWithImport) {
     env.NODE_OPTIONS = emptyImportOpts;
+  }
+  // Node truncates a large pipe write followed by process.exit() at an arbitrary point on macOS (pipe
+  // writes are async there; it reproduces without Tattle), which would make byte-comparison racy. File
+  // stdout is synchronous everywhere, so these probes exercise exit-flush ordering deterministically.
+  if (FILE_STDOUT.has(path.basename(file))) {
+    const out = path.join(tmpDir('tattle-tp-out-'), 'stdout.txt');
+    const fd = fs.openSync(out, 'w');
+    const r = spawnSync(process.execPath, [file, work], { env, encoding: 'utf8', timeout: 60_000, stdio: ['ignore', fd, 'pipe'] });
+    fs.closeSync(fd);
+    return { code: r.status, signal: r.signal, stdout: fs.readFileSync(out, 'utf8'), stderr: r.stderr };
   }
   const r = spawnSync(process.execPath, [file, work], { env, encoding: 'utf8', timeout: 60_000 });
   return { code: r.status, signal: r.signal, stdout: r.stdout, stderr: r.stderr };
