@@ -1218,6 +1218,27 @@ export const hostData: HostData = {
       "vendor": "Cursor (Anysphere)",
       "category": "model-api",
       "source": "https://cursor.com/docs/cli/overview"
+    },
+    {
+      "pattern": "*.continue.dev",
+      "class": "good",
+      "vendor": "Continue",
+      "category": "vendor-first-party",
+      "source": "https://docs.continue.dev/cli/overview"
+    },
+    {
+      "pattern": "*.codebuddy.cn",
+      "class": "good",
+      "vendor": "CodeBuddy (Tencent)",
+      "category": "vendor-first-party",
+      "source": "https://www.codebuddy.cn/docs/cli/overview"
+    },
+    {
+      "pattern": "scarf.sh",
+      "class": "telemetry",
+      "vendor": "Scarf",
+      "category": "analytics",
+      "source": "https://docs.scarf.sh/"
     }
   ]
 };

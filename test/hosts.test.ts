@@ -20,6 +20,10 @@ describe("classifyHost", () => {
     // cursor-agent's documented default --endpoint; flagging it "unclassified" would be indefensible.
     expect(classifyHost("api2.cursor.sh")).toMatchObject({ class: "good", vendor: "Cursor (Anysphere)", category: "model-api" });
     expect(classifyHost("cursor.sh.evil.com").class).toBe("unknown");
+    // Found by the clean-container Hall batch: vendors' own domains, and a package-analytics host.
+    expect(classifyHost("api.continue.dev")).toMatchObject({ class: "good", category: "vendor-first-party" });
+    expect(classifyHost("download.codebuddy.cn")).toMatchObject({ class: "good", category: "vendor-first-party" });
+    expect(classifyHost("scarf.sh")).toMatchObject({ class: "telemetry", vendor: "Scarf" });
   });
   it("case, trailing dot, port", () => {
     expect(classifyHost("Registry.NPMJS.org.").class).toBe("good");

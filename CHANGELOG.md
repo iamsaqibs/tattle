@@ -1,6 +1,11 @@
 # Changelog
 
-## 0.1.0 (unreleased)
+## Unreleased
+
+- Host intel: `*.continue.dev` and `*.codebuddy.cn` classified as vendor first-party, `scarf.sh` as package analytics (found by the clean-container Hall batch; each rule cites a source).
+- Hall of Shame: verified package list (`hall/tools.json` `verified`/`probes`), throwaway-container runner (`hall/container/`), draft header and benign-explanation column in `build-table.mjs`. Receipts are signed snapshots: re-run the batch with the current Tattle before publishing a table.
+
+## 0.1.0 (2026-11-12)
 
 First release.
 
