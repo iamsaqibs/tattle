@@ -1,76 +1,421 @@
 {
-  "_comment": "Curated agent CLIs for the Hall of Shame batch. Commands are safe --version/--help probes only. `network: false` (default) means: run only if the tool is already installed locally and do not give it a reason to talk (no prompt, no login). Entries with `network: true` are skipped unless run.sh gets --allow-network. Package names are UNVERIFIED suggestions: a human confirms each name and installs it (npm i --prefix hall/work <pkg>) before the first real run. Nothing here is a claim about any tool.",
-  "timeoutSeconds": 30,
+  "_comment": "Curated npm-distributed agent CLIs for the Hall of Shame batch. Names verified with `npm view` (metadata only) on 2026-11-12; see each `verified` field. `probes` are run inside a throwaway container by hall/container/run-container.sh (install, --version, --help, one credential-less prompt attempt). Never give these tools credentials. Nothing here is a claim about any tool.",
+  "timeoutSeconds": 60,
+  "excluded": {
+    "cursor-agent": "not distributed via npm",
+    "aider": "pip",
+    "goose": "not on npm",
+    "@google/jules": "npm repo is an awesome-list, not verifiably official",
+    "@vibe-kit/grok-cli": "unofficial",
+    "@blackbox_ai/blackbox-cli": "not verified official",
+    "@musistudio/claude-code-router": "third-party router, not a vendor CLI"
+  },
   "tools": [
     {
       "id": "claude-code",
       "package": "@anthropic-ai/claude-code",
       "bin": "claude",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "2.1.322",
+        "repository": "https://github.com/anthropics/claude-code (homepage; no repository field)",
+        "maintainers": "maintainers @anthropic.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
     },
     {
       "id": "codex",
       "package": "@openai/codex",
       "bin": "codex",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.167.2",
+        "repository": "git+https://github.com/openai/codex.git",
+        "maintainers": "maintainers openai-*"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "exec",
+          "say hi"
+        ]
+      }
     },
     {
       "id": "gemini-cli",
       "package": "@google/gemini-cli",
       "bin": "gemini",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.68.0",
+        "repository": "git+https://github.com/google-gemini/gemini-cli.git",
+        "maintainers": "maintainer google-wombot (@google.com)"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
     },
     {
       "id": "copilot-cli",
       "package": "@github/copilot",
       "bin": "copilot",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "1.0.109",
+        "repository": "git+https://github.com/github/copilot-cli.git",
+        "maintainers": "maintainers @github.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
     },
     {
       "id": "opencode",
       "package": "opencode-ai",
       "bin": "opencode",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "1.19.5",
+        "repository": "(no repository field in npm metadata)",
+        "maintainers": "maintainer thdxr; weakest verification, confirm against github.com/sst/opencode release before publishing"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "run",
+          "say hi"
+        ]
+      }
     },
     {
       "id": "qwen-code",
       "package": "@qwen-code/qwen-code",
       "bin": "qwen",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.27.2",
+        "repository": "git+https://github.com/QwenLM/qwen-code.git",
+        "maintainers": "maintainers (Alibaba/Qwen team)"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
     },
     {
-      "id": "cursor-agent",
-      "package": null,
-      "bin": "cursor-agent",
-      "args": [
-        "--version"
-      ],
-      "network": false,
-      "timeoutSeconds": 30
+      "id": "amp",
+      "package": "@sourcegraph/amp",
+      "bin": "amp",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.0.1794470450-g3a6702",
+        "repository": "homepage https://ampcode.com/ (no repository field)",
+        "maintainers": "maintainers sourcegraph-bot, @sourcegraph.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-x",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "crush",
+      "package": "@charmland/crush",
+      "bin": "crush",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.100.0",
+        "repository": "git+https://github.com/charmbracelet/crush.git",
+        "maintainers": "maintainers charmcli, @charm.sh"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "run",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "kilo",
+      "package": "@kilocode/cli",
+      "bin": "kilo",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "7.8.27",
+        "repository": "git+https://github.com/Kilo-Org/kilocode.git",
+        "maintainers": "maintainers @kilocode.ai"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "run",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "continue-cli",
+      "package": "@continuedev/cli",
+      "bin": "cn",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "1.5.47",
+        "repository": "git+https://github.com/continuedev/continue.git",
+        "maintainers": "maintainers @continue.dev"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "auggie",
+      "package": "@augmentcode/auggie",
+      "bin": "auggie",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.37.1",
+        "repository": "homepage https://augmentcode.com (no repository field)",
+        "maintainers": "maintainers @augmentcode.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "droid",
+      "package": "droid",
+      "bin": "droid",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "1.9.0",
+        "repository": "git+https://github.com/Factory-AI/factory.git (apps/cli)",
+        "maintainers": "maintainers @factory.ai"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "exec",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "iflow",
+      "package": "@iflow-ai/iflow-cli",
+      "bin": "iflow",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.5.19",
+        "repository": "git+https://github.com/iflow-ai/iflow-cli.git",
+        "maintainers": "maintainers (Alibaba)"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "cline",
+      "package": "cline",
+      "bin": "cline",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "3.0.74",
+        "repository": "git+https://github.com/cline/cline.git (apps/cli)",
+        "maintainers": "maintainers list empty in metadata; repo is cline/cline"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-y",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "pi",
+      "package": "@mariozechner/pi-coding-agent",
+      "bin": "pi",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.73.1",
+        "repository": "git+https://github.com/badlogic/pi-mono.git",
+        "maintainers": "maintainer badlogic (project author)"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "codebuddy",
+      "package": "@tencent-ai/codebuddy-code",
+      "bin": "codebuddy",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "2.183.0",
+        "repository": "homepage https://cnb.cool/codebuddy/codebuddy-code (no repository field)",
+        "maintainers": "maintainers @tencent.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ],
+        "prompt": [
+          "-p",
+          "say hi"
+        ]
+      }
+    },
+    {
+      "id": "qodo",
+      "package": "@qodo/command",
+      "bin": "qodo",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "0.36.0",
+        "repository": "git+https://github.com/qodo-ai/command.git",
+        "maintainers": "vendor repo"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ]
+      }
+    },
+    {
+      "id": "cody",
+      "package": "@sourcegraph/cody",
+      "bin": "cody",
+      "verified": {
+        "checkedOn": "2026-11-12",
+        "version": "5.5.26",
+        "repository": "git+https://github.com/sourcegraph/cody.git (agent)",
+        "maintainers": "maintainers @sourcegraph.com"
+      },
+      "probes": {
+        "version": [
+          "--version"
+        ],
+        "help": [
+          "--help"
+        ]
+      }
     }
   ]
 }

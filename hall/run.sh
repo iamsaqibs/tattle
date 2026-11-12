@@ -8,6 +8,7 @@
 # * Probes are --version/--help only. Tools marked `network: true` are skipped without --allow-network.
 # * Each tool gets its own TATTLE_HOME under DIR/<id>/ so receipts are easy to attribute.
 # * This script makes no network calls itself. Nothing is published or posted.
+# For publishable receipts (clean profile) use hall/container/run-container.sh instead.
 # Then:  node hall/build-table.mjs DIR HALL_OF_SHAME.md
 set -u
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -22,7 +23,7 @@ while [ $# -gt 0 ]; do
     --dry-run) DRY=1 ;;
     --out) OUT="$2"; shift ;;
     --only) ONLY="$2"; shift ;;
-    -h|--help) sed -n '2,13p' "${BASH_SOURCE[0]}"; exit 0 ;;
+    -h|--help) sed -n "2,14p" "${BASH_SOURCE[0]}"; exit 0 ;;
     *) echo "unknown argument: $1" >&2; exit 2 ;;
   esac
   shift
@@ -42,7 +43,7 @@ with_timeout() {
 # id<TAB>bin<TAB>network<TAB>timeout<TAB>args (JSON array)
 ROWS="$(node -e '
 const c = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"));
-for (const t of c.tools) console.log([t.id, t.bin, t.network === true ? 1 : 0, t.timeoutSeconds ?? c.timeoutSeconds ?? 30, JSON.stringify(t.args ?? ["--version"])].join("\t"));
+for (const t of c.tools) console.log([t.id, t.bin, t.network === true ? 1 : 0, t.timeoutSeconds ?? c.timeoutSeconds ?? 30, JSON.stringify(t.args ?? (t.probes && t.probes.version) ?? ["--version"])].join("\t"));
 ' "$HERE/tools.json")"
 
 mkdir -p "$OUT"
