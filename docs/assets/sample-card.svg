@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Tattle receipt: ESCAPE CHAIN">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8b949e"/></marker></defs>
+<g font-family="ui-sans-serif, -apple-system, &apos;Segoe UI&apos;, Helvetica, Arial, sans-serif">
+<rect width="1200" height="630" fill="#0d1117"/>
+<rect width="1200" height="140" fill="#da3633"/>
+<text x="48" y="98" font-size="84" fill="#ffffff" font-weight="800" letter-spacing="1">ESCAPE CHAIN</text>
+<text x="1152" y="64" font-size="36" fill="#ffffff" text-anchor="end" font-weight="700">score 100/100</text>
+<text x="1152" y="110" font-size="26" fill="#ffffff" text-anchor="end" opacity="0.85" letter-spacing="2">TATTLE  34 events</text>
+<text x="48" y="186" font-size="26" fill="#8b949e" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">$ node fixtures/guilty/guilty.mjs</text>
+<text x="48" y="236" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">TOP FINDINGS</text>
+<circle cx="58" cy="273" r="8" fill="#ff6a69"/>
+<text x="80" y="282" font-size="26" fill="#e6edf3" >read 2 secret-shaped files, then wrote 142 bytes to 1…</text>
+<circle cx="58" cy="315" r="8" fill="#ff6a69"/>
+<text x="80" y="324" font-size="26" fill="#e6edf3" >read 2 secret-shaped files, then wrote 252 bytes to l…</text>
+<circle cx="58" cy="357" r="8" fill="#ff6a69"/>
+<text x="80" y="366" font-size="26" fill="#e6edf3" >read 2 secret-shaped files, then wrote 100 bytes to 1…</text>
+<circle cx="58" cy="399" r="8" fill="#ff7b72"/>
+<text x="80" y="408" font-size="26" fill="#e6edf3" >read 3 secret-shaped files (high severity: AWS creden…</text>
+<circle cx="58" cy="441" r="8" fill="#e3b341"/>
+<text x="80" y="450" font-size="26" fill="#e6edf3" >opened 3 connections to 2 unclassified hosts (localho…</text>
+<text x="80" y="488" font-size="20" fill="#8b949e" >+1 more in receipt.json</text>
+<text x="760" y="236" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">SENSITIVE</text>
+<text x="760" y="306" font-size="76" fill="#ff7b72" font-weight="800">4</text>
+<text x="960" y="236" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">CHAINS</text>
+<text x="960" y="306" font-size="76" fill="#ff7b72" font-weight="800">3</text>
+<text x="760" y="352" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">HOSTS (2)</text>
+<rect x="760" y="366" width="392" height="28" rx="6" fill="#21262d"/>
+<rect x="760" y="366" width="392" height="28" fill="#6e7681"/>
+<rect x="760" y="408" width="16" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="424" font-size="22" fill="#e6edf3" >good 0</text>
+<rect x="960" y="408" width="16" height="16" rx="3" fill="#e3b341"/>
+<text x="986" y="424" font-size="22" fill="#e6edf3" >telemetry 0</text>
+<rect x="760" y="438" width="16" height="16" rx="3" fill="#db6d28"/>
+<text x="786" y="454" font-size="22" fill="#e6edf3" >unknown 0</text>
+<rect x="960" y="438" width="16" height="16" rx="3" fill="#6e7681"/>
+<text x="986" y="454" font-size="22" fill="#e6edf3" >local 2</text>
+<rect x="48" y="492" width="330" height="52" rx="10" fill="#161b22" stroke="#db6d28" stroke-width="3"/><text x="213" y="527" font-size="24" fill="#e6edf3" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">.env</text>
+<line x1="384" y1="518" x2="436" y2="518" stroke="#8b949e" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="444" y="492" width="200" height="52" rx="10" fill="#161b22" stroke="#8b949e" stroke-width="3"/><text x="544" y="527" font-size="24" fill="#e6edf3" text-anchor="middle">142 B</text>
+<line x1="650" y1="518" x2="702" y2="518" stroke="#8b949e" stroke-width="3" marker-end="url(#ar)"/>
+<rect x="710" y="492" width="330" height="52" rx="10" fill="#161b22" stroke="#da3633" stroke-width="3"/><text x="875" y="527" font-size="24" fill="#e6edf3" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">127.0.0.1</text>
+<text x="1060" y="525" font-size="22" fill="#8b949e" >+2 more</text>
+<line x1="48" y1="560" x2="1152" y2="560" stroke="#30363d" stroke-width="2"/>
+<text x="48" y="592" font-size="24" fill="#e6edf3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tt_f65978bda531  ·  2026-11-12 12:13 UTC</text>
+<text x="1152" y="592" font-size="24" fill="#58a6ff" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tattle verify tt_f65978bda531</text>
+<text x="48" y="618" font-size="18" fill="#8b949e" >events captured in-process, nothing left this machine</text>
+</g></svg>

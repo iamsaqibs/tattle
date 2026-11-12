@@ -1,0 +1,8 @@
+node_modules
+dist
+*.tgz
+hall/work
+hall/receipts
+hall/HALL_OF_SHAME.draft.md
+.DS_Store
+coverage

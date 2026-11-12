@@ -1,0 +1,27 @@
+const dns = require('dns');
+const util = require('util');
+const out = [];
+const log = (n, v) => out.push(n + ':' + JSON.stringify(v));
+const norm = (r) => JSON.parse(JSON.stringify(r, (k, v) => (k === 'address' ? (v === '127.0.0.1' || v === '::1' ? 'LOCAL' : v) : v)));
+(async () => {
+  log('names', [dns.lookup.name, dns.lookup.length, dns.resolve4.name, dns.promises.lookup.name, dns.promises.lookup.length]);
+  log('promises-identity', [dns.promises === require('dns/promises'), dns.promises === require('node:dns').promises]);
+  log('lookup-cb', await new Promise((r) => dns.lookup('localhost', function (e, a, f) { r([e, a === '127.0.0.1' || a === '::1', typeof f, arguments.length]); })));
+  log('lookup-family4', await new Promise((r) => dns.lookup('localhost', { family: 4 }, (e, a, f) => r([e, a, f]))));
+  log('lookup-family-number', await new Promise((r) => dns.lookup('localhost', 4, (e, a, f) => r([e, a, f]))));
+  log('lookup-all', await new Promise((r) => dns.lookup('localhost', { all: true }, (e, l) => r([e, Array.isArray(l), l.every((x) => 'address' in x && 'family' in x)]))));
+  log('lookup-ip-literal', await new Promise((r) => dns.lookup('127.0.0.1', (e, a, f) => r([e, a, f]))));
+  log('lookup-returns', (() => { const r = dns.lookup('localhost', () => {}); return typeof r; })());
+  log('lookup-throws-no-cb', (() => { try { dns.lookup('localhost'); } catch (e) { return e.code; } })());
+  log('lookup-throws-bad-host', (() => { try { dns.lookup(5, () => {}); } catch (e) { return e.code; } })());
+  log('lookup-throws-bad-family', (() => { try { dns.lookup('localhost', { family: 9 }, () => {}); } catch (e) { return e.code; } })());
+  log('promisify-lookup', norm(await util.promisify(dns.lookup)('127.0.0.1')));
+  log('promisify-lookup-all', await util.promisify(dns.lookup)('localhost', { all: true }).then((l) => Array.isArray(l)));
+  log('promisify-lookupService', Object.keys(await util.promisify(dns.lookupService)('127.0.0.1', 80).catch(() => ({ skipped: 1 }))).sort());
+  log('promises.lookup', norm(await dns.promises.lookup('127.0.0.1')));
+  log('promises.lookup-all', await dns.promises.lookup('localhost', { all: true }).then((l) => Array.isArray(l)));
+  log('Resolver', [typeof dns.Resolver, typeof new dns.Resolver().resolve4, new dns.Resolver().resolve4.name]);
+  log('resolve-custom-symbols', Object.getOwnPropertySymbols(dns.lookup).length);
+  log('exec-custom', Object.getOwnPropertySymbols(dns.lookup).map((s) => s.description).sort());
+  console.log(out.join('\n'));
+})();

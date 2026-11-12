@@ -1,0 +1,76 @@
+{
+  "_comment": "Curated agent CLIs for the Hall of Shame batch. Commands are safe --version/--help probes only. `network: false` (default) means: run only if the tool is already installed locally and do not give it a reason to talk (no prompt, no login). Entries with `network: true` are skipped unless run.sh gets --allow-network. Package names are UNVERIFIED suggestions: a human confirms each name and installs it (npm i --prefix hall/work <pkg>) before the first real run. Nothing here is a claim about any tool.",
+  "timeoutSeconds": 30,
+  "tools": [
+    {
+      "id": "claude-code",
+      "package": "@anthropic-ai/claude-code",
+      "bin": "claude",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "codex",
+      "package": "@openai/codex",
+      "bin": "codex",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "gemini-cli",
+      "package": "@google/gemini-cli",
+      "bin": "gemini",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "copilot-cli",
+      "package": "@github/copilot",
+      "bin": "copilot",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "opencode",
+      "package": "opencode-ai",
+      "bin": "opencode",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "qwen-code",
+      "package": "@qwen-code/qwen-code",
+      "bin": "qwen",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    },
+    {
+      "id": "cursor-agent",
+      "package": null,
+      "bin": "cursor-agent",
+      "args": [
+        "--version"
+      ],
+      "network": false,
+      "timeoutSeconds": 30
+    }
+  ]
+}
