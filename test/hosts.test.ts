@@ -24,6 +24,9 @@ describe("classifyHost", () => {
     expect(classifyHost("api.continue.dev")).toMatchObject({ class: "good", category: "vendor-first-party" });
     expect(classifyHost("download.codebuddy.cn")).toMatchObject({ class: "good", category: "vendor-first-party" });
     expect(classifyHost("scarf.sh")).toMatchObject({ class: "telemetry", vendor: "Scarf" });
+    // From Qwen's notice reply (QwenLM/qwen-code#17052): RUM is analytics; models.dev is a catalog fetch, not telemetry.
+    expect(classifyHost("gb4w8c3ygj-default-sea.rum.aliyuncs.com")).toMatchObject({ class: "telemetry", category: "analytics" });
+    expect(classifyHost("models.dev")).toMatchObject({ class: "good", category: "model-catalog" });
   });
   it("case, trailing dot, port", () => {
     expect(classifyHost("Registry.NPMJS.org.").class).toBe("good");

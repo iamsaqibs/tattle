@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Host intel: `*.continue.dev` and `*.codebuddy.cn` classified as vendor first-party, `scarf.sh` as package analytics (found by the clean-container Hall batch; each rule cites a source).
+- Host intel: `*.rum.aliyuncs.com` classified as analytics, `models.dev` as a model catalog (not telemetry), per Qwen's documented behaviour (QwenLM/qwen-code#17052).
 - Hall of Shame: verified package list (`hall/tools.json` `verified`/`probes`), throwaway-container runner (`hall/container/`), draft header and benign-explanation column in `build-table.mjs`. Receipts are signed snapshots: re-run the batch with the current Tattle before publishing a table.
 
 ## 0.1.0 (2026-11-12)

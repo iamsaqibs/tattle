@@ -1226,6 +1226,20 @@
       "vendor": "Scarf",
       "category": "analytics",
       "source": "https://docs.scarf.sh/"
+    },
+    {
+      "pattern": "*.rum.aliyuncs.com",
+      "class": "telemetry",
+      "vendor": "Alibaba Cloud RUM",
+      "category": "analytics",
+      "source": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/support/tos-privacy.md#usage-statistics-and-telemetry"
+    },
+    {
+      "pattern": "models.dev",
+      "class": "good",
+      "vendor": "models.dev (SST)",
+      "category": "model-catalog",
+      "source": "https://github.com/QwenLM/qwen-code/blob/main/docs/users/configuration/settings.md"
     }
   ]
 }
