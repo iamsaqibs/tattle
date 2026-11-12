@@ -22,12 +22,14 @@ const web = http.createServer((q, r) => (q.resume(), q.on('end', () => r.end('ok
 const tcp = net.createServer((s) => { let n = 0; s.on('data', (c) => { n += c.length; if (n >= 100) s.write('ack'); }); s.on('error', () => {}); }).listen(0, '127.0.0.1');
 await Promise.all([new Promise((r) => web.once('listening', r)), new Promise((r) => tcp.once('listening', r))]);
 
-const env = { ...process.env, TATTLE_HOME: path.join(work, 'tattle-home'), HOME: home, USERPROFILE: home, GUILTY_HOME: home, GUILTY_HTTP_PORT: String(web.address().port), GUILTY_TCP_PORT: String(tcp.address().port), PATH: path.join(home, 'bin') + path.delimiter + process.env.PATH, OPENAI_API_KEY: 'not-a-real-key' };
+// SAMPLE_TATTLE_HOME lets the demo tape keep this receipt next to its others (so `tattle verify latest` shows it).
+const tattleHome = process.env.SAMPLE_TATTLE_HOME || path.join(work, 'tattle-home');
+const env = { ...process.env, TATTLE_HOME: tattleHome, HOME: home, USERPROFILE: home, GUILTY_HOME: home, GUILTY_HTTP_PORT: String(web.address().port), GUILTY_TCP_PORT: String(tcp.address().port), PATH: path.join(home, 'bin') + path.delimiter + process.env.PATH, OPENAI_API_KEY: 'not-a-real-key' };
 delete env.TATTLE_LOG;
-const code = await new Promise((r) => spawn(process.execPath, [path.join(root, 'dist', 'cli.js'), 'run', '--include-local', '--no-color', '--', 'node', 'fixtures/guilty/guilty.mjs'], { env, cwd: root, stdio: 'inherit' }).on('close', r));
+const code = await new Promise((r) => spawn(process.execPath, [path.join(root, 'dist', 'cli.js'), 'run', '--include-local', ...(process.env.FORCE_COLOR ? [] : ['--no-color']), '--', 'node', 'fixtures/guilty/guilty.mjs'], { env, cwd: root, stdio: 'inherit' }).on('close', r));
 web.close(); tcp.close();
-const recs = path.join(work, 'tattle-home', 'receipts');
-const dir = path.join(recs, fs.readdirSync(recs)[0]);
+const recs = path.join(tattleHome, 'receipts');
+const dir = path.join(recs, fs.readdirSync(recs).sort().at(-1)); // run ids sort by time; newest = this run
 fs.mkdirSync(path.join(root, 'docs', 'assets'), { recursive: true });
 fs.copyFileSync(path.join(dir, 'card.svg'), path.join(root, 'docs', 'assets', 'sample-card.svg'));
 console.log(`exit ${code}; wrote docs/assets/sample-card.svg`);

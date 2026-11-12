@@ -2,9 +2,11 @@
 
 **The lie detector for AI CLI tools. See every file it reads, every host it talks to and every process it spawns, then keep a signed receipt.**
 
+![Tattle demo: a clean run, the guilty fixture producing an ESCAPE CHAIN verdict, then verifying the signed receipt](docs/assets/demo.gif)
+
 ![Sample Tattle verdict card](docs/assets/sample-card.svg)
 
-> The card above is generated from Tattle's own **test fixture** (`fixtures/guilty`: fake secrets, localhost servers, a stubbed clipboard reader), run with the hidden `--include-local` flag. It is not a real tool and not a finding about anyone. Regenerate it with `node scripts/gen-sample-card.mjs`.
+> The demo and card above are generated from Tattle's own **test fixture** (`fixtures/guilty`: fake secrets, localhost servers, a stubbed clipboard reader), run with the hidden `--include-local` flag. It is not a real tool and not a finding about anyone. Regenerate them with `npm run build && vhs docs/demo.tape` (GIF) and `node scripts/gen-sample-card.mjs` (card).
 
 ## Quickstart
 
@@ -83,8 +85,9 @@ Tattle's reputation is its product, so the rules are written down before any fin
 
 - **What we publish.** Receipts (with their raw event logs) and the verdict derived from them, for a named command and version, with the date and Tattle version. Every claim in a published table must be reproducible from the raw receipt: `tattle verify --strict <id>`. We redact home-directory names and anything that identifies a private person. We never publish file contents, secrets or exploit details, because Tattle never records them.
 - **Observations, not accusations.** A receipt says what was observed in one run. Verdict names describe behaviour, never intent. If a behaviour has a documented, legitimate purpose (an update check, vendor telemetry that is disclosed), we say so where we can find it.
+- **Clean profile only.** Agent CLIs act on the *user's* configuration: a run in a real developer profile records that person's MCP servers, integrations and git identity, not the tool's own behaviour (our first real `cursor-agent` run connected to 20+ user-configured MCP hosts). Publishable receipts come only from a fresh OS user or container with a throwaway login and no extra config, and the run setup is published with the receipt.
 - **72 hours' notice.** Before a vendor or maintainer is named in a published table, we send them the receipt and the command to reproduce it, and wait at least 72 hours. Their response, including "this is intended, documented here", is published next to the row, verbatim if they wish. Where the issue looks like an actively exploitable security vulnerability rather than a behaviour, we follow the project's own security policy instead and publish nothing until it is resolved or the disclosure window agreed there has passed.
-- **How to contest a receipt.** Open an issue (or email the maintainers listed in the repository once it exists) naming the receipt id. Tell us what is wrong: a mis-classified host, a path rule that matched something benign, a version mismatch, a flaw in Tattle itself. We re-run it with you, and we correct or remove a row when it does not hold up; corrections are noted in the changelog, not silently edited. Bugs in Tattle's rules are fixed in Tattle.
+- **How to contest a receipt.** Open an issue at <https://github.com/iamsaqibs/tattle/issues> naming the receipt id. Tell us what is wrong: a mis-classified host, a path rule that matched something benign, a version mismatch, a flaw in Tattle itself. We re-run it with you, and we correct or remove a row when it does not hold up; corrections are noted in the changelog, not silently edited. Bugs in Tattle's rules are fixed in Tattle.
 - **No paywall, no drama-farming.** The tool, the rule packs and the published receipts are free and MIT-licensed. No "pay to remove your listing", no private-report upsell, no rage-bait framing, and no ranking designed to maximise outrage.
 
 ## Development

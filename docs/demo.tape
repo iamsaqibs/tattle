@@ -1,38 +1,43 @@
-# Regenerate the demo GIF:  vhs docs/demo.tape   (needs https://github.com/charmbracelet/vhs)
+# Regenerate the demo GIF:  npm run build && vhs docs/demo.tape   (needs https://github.com/charmbracelet/vhs)
 # Records Tattle running the repository's own guilty *fixture* against localhost, not a real tool.
-# Run `npm run build` first. The fixture needs ports and a fake HOME, so we drive it through the
-# sample-card script, which sets all of that up.
+# The hidden setup points `tattle` at the local build (what `npm i -g @iamsaqibs/tattle` installs) and
+# uses a throwaway TATTLE_HOME, so no personal receipts, keys or paths appear in the recording.
 Output docs/assets/demo.gif
 
 Set Shell "bash"
 Set FontSize 16
 Set Width 1200
-Set Height 700
+Set Height 720
 Set Padding 20
 Set Theme "Dracula"
-Set TypingSpeed 45ms
+Set TypingSpeed 40ms
 
 Hide
-Type "export NO_COLOR=1 PS1='$ ' && clear"
+Type `export PS1='$ ' FORCE_COLOR=1 TATTLE_HOME=$(mktemp -d)/demo-home && tattle() { node "$PWD/dist/cli.js" "$@"; } && clear`
 Enter
 Show
 
 Type "# a harmless command"
 Enter
-Type "npx @iamsaqibs/tattle run -- node -e \"console.log('hello')\""
+Type `tattle run -- node -e "console.log('hello')"`
 Enter
 Sleep 4s
 
 Type "clear"
 Enter
-Type "# the guilty test fixture (fake secrets, localhost only)"
+Type "# the guilty test fixture: reads a fake .env, POSTs it to localhost"
 Enter
-Type "node scripts/gen-sample-card.mjs"
+Type "SAMPLE_TATTLE_HOME=$TATTLE_HOME node scripts/gen-sample-card.mjs"
 Enter
-Sleep 6s
+Sleep 7s
 
-Type "# a receipt anyone can verify"
+Type "clear"
 Enter
-Type "npx @iamsaqibs/tattle list"
+Type "# every receipt is signed; anyone can check it"
 Enter
-Sleep 2s
+Type "tattle verify latest"
+Enter
+Sleep 3s
+Type "tattle list"
+Enter
+Sleep 3s

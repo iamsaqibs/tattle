@@ -18,7 +18,7 @@
 <text x="80" y="408" font-size="26" fill="#e6edf3" >read 3 secret-shaped files (high severity: AWS creden…</text>
 <circle cx="58" cy="441" r="8" fill="#e3b341"/>
 <text x="80" y="450" font-size="26" fill="#e6edf3" >opened 3 connections to 2 unclassified hosts (localho…</text>
-<text x="80" y="488" font-size="20" fill="#8b949e" >+1 more in receipt.json</text>
+<text x="80" y="488" font-size="20" fill="#8b949e" >+2 more in receipt.json</text>
 <text x="760" y="236" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">SENSITIVE</text>
 <text x="760" y="306" font-size="76" fill="#ff7b72" font-weight="800">4</text>
 <text x="960" y="236" font-size="20" fill="#8b949e" letter-spacing="3" font-weight="700">CHAINS</text>
@@ -41,7 +41,7 @@
 <rect x="710" y="492" width="330" height="52" rx="10" fill="#161b22" stroke="#da3633" stroke-width="3"/><text x="875" y="527" font-size="24" fill="#e6edf3" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">127.0.0.1</text>
 <text x="1060" y="525" font-size="22" fill="#8b949e" >+2 more</text>
 <line x1="48" y1="560" x2="1152" y2="560" stroke="#30363d" stroke-width="2"/>
-<text x="48" y="592" font-size="24" fill="#e6edf3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tt_f65978bda531  ·  2026-11-12 12:13 UTC</text>
-<text x="1152" y="592" font-size="24" fill="#58a6ff" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tattle verify tt_f65978bda531</text>
+<text x="48" y="592" font-size="24" fill="#e6edf3" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tt_83b2b804054a  ·  2026-11-12 13:00 UTC</text>
+<text x="1152" y="592" font-size="24" fill="#58a6ff" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, &apos;Liberation Mono&apos;, monospace">tattle verify tt_83b2b804054a</text>
 <text x="48" y="618" font-size="18" fill="#8b949e" >events captured in-process, nothing left this machine</text>
 </g></svg>

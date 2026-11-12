@@ -16,6 +16,11 @@ describe("classifyHost", () => {
     expect(classifyHost("evil.example.com").class).toBe("unknown");
     expect(classifyHost("ingest.sentry.io.evil.com").class).toBe("unknown");
   });
+  it("agent vendors' first-party API hosts are good, not unknown (found by real Hall runs)", () => {
+    // cursor-agent's documented default --endpoint; flagging it "unclassified" would be indefensible.
+    expect(classifyHost("api2.cursor.sh")).toMatchObject({ class: "good", vendor: "Cursor (Anysphere)", category: "model-api" });
+    expect(classifyHost("cursor.sh.evil.com").class).toBe("unknown");
+  });
   it("case, trailing dot, port", () => {
     expect(classifyHost("Registry.NPMJS.org.").class).toBe("good");
     expect(classifyHost("api.openai.com:443").class).toBe("good");

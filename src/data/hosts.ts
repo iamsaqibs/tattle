@@ -1204,6 +1204,20 @@ export const hostData: HostData = {
       "vendor": "Sentry",
       "category": "error-reporting",
       "source": "https://docs.sentry.io/platforms/javascript/install/cdn/"
+    },
+    {
+      "pattern": "*.cursor.sh",
+      "class": "good",
+      "vendor": "Cursor (Anysphere)",
+      "category": "model-api",
+      "source": "https://cursor.com/docs/cli/reference/parameters"
+    },
+    {
+      "pattern": "*.cursor.com",
+      "class": "good",
+      "vendor": "Cursor (Anysphere)",
+      "category": "model-api",
+      "source": "https://cursor.com/docs/cli/overview"
     }
   ]
 };
