@@ -47,7 +47,11 @@ try {
   const npx = spawnSync(npm === 'npm.cmd' ? 'npx.cmd' : 'npx', ['--no-install', 'tattle', '--version'], { cwd: proj, env, ...sh });
   check(npx.status === 0 && npx.stdout.trim() === want, 'npx tattle --version');
 
-  const r = spawnSync(bin, ['run', '--', process.execPath, '-e', "require('fs').readFileSync(process.argv[1]); console.log('child-output')", fileURLToPath(import.meta.url)], { cwd: proj, env, ...sh });
+  // Child args go through cmd.exe on Windows (shell: true, no quoting), so keep them free of spaces/quotes:
+  // use a script file and plain `node` from PATH rather than `node -e "<code>"` and a spaced execPath.
+  const childScript = path.join(proj, 'child.cjs');
+  fs.writeFileSync(childScript, "require('fs').readFileSync(__filename); console.log('child-output');\n");
+  const r = spawnSync(bin, ['run', '--', 'node', childScript], { cwd: proj, env, ...sh });
   check(r.status === 0, 'tattle run exits 0');
   check(r.stdout.includes('child-output'), 'child stdout passed through');
   check(/tt_[0-9a-f]{12}/.test(r.stderr), 'receipt id printed');
@@ -58,7 +62,9 @@ try {
     const ver = spawnSync(bin, ['verify', '--strict', path.join(recs, dirs[0])], { cwd: proj, env, ...sh });
     check(ver.status === 0, 'tattle verify --strict on the fresh receipt');
   }
-  const ex = spawnSync(bin, ['run', '--quiet', '--', process.execPath, '-e', 'process.exit(7)'], { cwd: proj, env, ...sh });
+  const exitScript = path.join(proj, 'exit7.cjs');
+  fs.writeFileSync(exitScript, 'process.exit(7);\n');
+  const ex = spawnSync(bin, ['run', '--quiet', '--', 'node', exitScript], { cwd: proj, env, ...sh });
   check(ex.status === 7, 'child exit code propagates (7)');
 } finally {
   fs.rmSync(tmp, { recursive: true, force: true });
